@@ -9,7 +9,7 @@ var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 var OptimizaeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 var SafeUmdPlugin = require('safe-umd-webpack-plugin');
 var isProduction = process.env.NODE_ENV === 'production';
-var FILENAME = pkg.name + (isProduction ? '.min' : '');
+var FILENAME = pkg.name + ".[name]"+ (isProduction ? '.min' : '');
 var BANNER = [
     'TOAST UI Calendar',
     '@version ' + pkg.version + ' | ' + new Date().toDateString(),
@@ -24,7 +24,10 @@ var preprocessLoader = `preprocess-loader?${context}`;
 var devtool = 'source-map';
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+      app: './src/index.js',
+      vendor: Object.keys(pkg.dependencies)
+    },
     output: {
         library: ['tui', 'Calendar'],
         libraryTarget: 'umd',
@@ -33,24 +36,24 @@ module.exports = {
         publicPath: '/dist'
     },
     externals: {
-        'tui-code-snippet': {
-            'commonjs': 'tui-code-snippet',
-            'commonjs2': 'tui-code-snippet',
-            'amd': 'tui-code-snippet',
-            'root': ['tui', 'util']
-        },
-        'tui-date-picker': {
-            'commonjs': 'tui-date-picker',
-            'commonjs2': 'tui-date-picker',
-            'amd': 'tui-date-picker',
-            'root': ['tui', 'DatePicker']
-        },
-        'tui-time-picker': {
-            'commonjs': 'tui-time-picker',
-            'commonjs2': 'tui-time-picker',
-            'amd': 'tui-time-picker',
-            'root': ['tui', 'TimePicker']
-        }
+        // 'tui-code-snippet': {
+        //     'commonjs': 'tui-code-snippet',
+        //     'commonjs2': 'tui-code-snippet',
+        //     'amd': 'tui-code-snippet',
+        //     'root': ['tui', 'util']
+        // },
+        // 'tui-date-picker': {
+        //     'commonjs': 'tui-date-picker',
+        //     'commonjs2': 'tui-date-picker',
+        //     'amd': 'tui-date-picker',
+        //     'root': ['tui', 'DatePicker']
+        // },
+        // 'tui-time-picker': {
+        //     'commonjs': 'tui-time-picker',
+        //     'commonjs2': 'tui-time-picker',
+        //     'amd': 'tui-time-picker',
+        //     'root': ['tui', 'TimePicker']
+        // }
     },
     module: {
         rules: [{
